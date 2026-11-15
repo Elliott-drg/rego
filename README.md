@@ -4,7 +4,7 @@ Outil local pour comparer vite des **sites** et des **dates** d'atterrissage au 
 où sont le Soleil et la Terre par rapport à l'horizon réel, combien de temps durent les nuits et les
 coupures radio, quelle énergie solaire et quelle température attendre.
 
-Tout tourne sur votre ordinateur (`localhost`). Aucun compte, aucune clé API, aucun site en ligne.
+Tout tourne sur votre ordinateur (`localhost`). Aucun compte, aucune clé API, aucun site en lig    ne.
 
 ## Lancer
 
