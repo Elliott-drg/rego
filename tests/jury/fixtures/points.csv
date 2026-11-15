@@ -1,0 +1,6 @@
+nom;latitude;longitude;commentaire
+Jury C1;-88,2;-64,6;virgule décimale
+Jury C2;-87.2;125.4;point décimal
+Jury C3;-89.45;-137.3;près du pôle
+Hors carte;12.5;45.0;hémisphère nord
+Cassé;abc;def;ligne invalide

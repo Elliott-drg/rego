@@ -1,0 +1,182 @@
+/* Vue « Comparer » : scénarios côte à côte, tableau des critères, radar, chronologie, analyse.
+   La mise en page suit la largeur réelle de la vue (requêtes de conteneur), pas celle de la fenêtre :
+   les panneaux latéraux de l'application peuvent être ouverts ou fermés. */
+.cmp { container: cmp / inline-size; display: grid; gap: 14px; align-content: start; padding: 16px; min-height: 100%; }
+.cmp [hidden] { display: none !important; }
+.cmp .card + .card { margin-top: 0; }
+.cmp .seg { flex-wrap: wrap; }
+.cmp-label { font: 400 10.5px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--text-3); }
+.cmp-fine { margin: 6px 0 0; font-size: 12px; line-height: 1.45; color: var(--text-3); }
+.cmp-fine .tag, .cmp-sec .sec-title .tag { vertical-align: 1px; }
+.cmp-sub { display: block; font: 400 11px/1.3 var(--font); color: var(--text-3); }
+.cmp-strong { font-weight: 600; color: #fff; }
+.cmp-scroll { overflow-x: auto; }
+.cmp-sticky { position: sticky; left: 0; z-index: 1; background: var(--bg-2); }
+
+/* Pastille de scénario : la lettre porte l'information, la couleur de série la renforce */
+.cmp-letter { display: inline-grid; place-items: center; flex: none; min-width: 24px; height: 24px; padding: 0 6px; border: 1.5px solid var(--sc, var(--line-2)); border-radius: 5px; background: color-mix(in srgb, var(--sc, #fff) 16%, transparent); color: var(--sc, var(--text)); font: 600 14px/1 var(--font-cond); letter-spacing: .04em; }
+
+/* ---------- Barre du haut ---------- */
+.cmp-top { display: grid; gap: 10px; }
+.cmp-top-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 14px; }
+.cmp-title { font: 600 20px/1.2 var(--font); }
+.cmp-lead { margin: 0; color: var(--text-2); }
+.cmp-top-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 20px; padding: 10px 12px; background: var(--bg-1); border: 1px solid var(--line); border-radius: var(--radius); }
+.cmp-top-group { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.cmp-now { margin-left: auto; }
+
+/* ---------- Structure ---------- */
+.cmp-body { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; align-items: start; }
+.cmp-main, .cmp-side { display: grid; gap: 14px; min-width: 0; }
+.cmp-sec { padding: 12px 14px 14px; min-width: 0; }
+.cmp-sec > .sec-title { margin-bottom: 10px; justify-content: flex-start; }
+.cmp-fold { padding: 0; min-width: 0; }
+.cmp-fold details.col > summary { padding: 14px; }
+@container cmp (min-width: 1100px) {
+  .cmp-body { grid-template-columns: minmax(0, 1fr) 348px; }
+}
+
+/* ---------- État vide ---------- */
+.cmp-empty { display: grid; gap: 10px; justify-items: start; padding: 24px 22px; }
+.cmp-empty-title { font: 600 17px/1.2 var(--font); }
+.cmp-empty p { margin: 0; max-width: 70ch; color: var(--text-2); }
+.cmp-empty .btn { height: auto; min-height: 34px; padding: 6px 13px; white-space: normal; text-align: left; }
+
+/* ---------- Colonnes scénario ---------- */
+.cmp-cards { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
+@container cmp (min-width: 700px) {
+  .cmp-cards { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+.cmp-card { container: cmpcard / inline-size; display: grid; gap: 10px; align-content: start; padding: 12px; border-top: 3px solid var(--sc, var(--line-2)); min-width: 0; }
+.cmp-card-head { display: flex; align-items: flex-start; gap: 10px; }
+.cmp-card-head .iconbtn { width: 28px; height: 28px; margin: -3px -4px 0 0; }
+.cmp-card-id { flex: 1; min-width: 0; }
+.cmp-card-name { font: 600 15.5px/1.25 var(--font); overflow-wrap: anywhere; }
+.cmp-card-meta { display: flex; flex-wrap: wrap; gap: 1px 10px; margin-top: 2px; font-size: 12.5px; color: var(--text-2); }
+.cmp-card-mid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; align-items: start; }
+@container cmpcard (min-width: 310px) {
+  .cmp-card-mid { grid-template-columns: minmax(0, 200px) minmax(0, 1fr); }
+}
+.cmp-thumb { display: grid; gap: 5px; margin: 0; min-width: 0; }
+.cmp-thumb-canvas { display: block; width: 100%; max-width: 240px; aspect-ratio: 1; background: #000; border: 1px solid var(--line-2); border-radius: 6px; }
+.cmp-thumb-none { padding: 14px 10px; border: 1px dashed var(--line-2); border-radius: 6px; font-size: 12.5px; color: var(--text-3); }
+.cmp-thumb-legend { display: flex; flex-wrap: wrap; gap: 2px 10px; font: 400 11px/1.4 var(--mono); color: var(--text-2); }
+.cmp-thumb-legend .ico { margin-right: 3px; }
+.cmp-thumb-legend .swatch { width: 9px; height: 9px; margin-right: 4px; }
+.cmp-status { display: grid; gap: 8px; align-content: start; min-width: 0; }
+.cmp-status-line { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 7px; font-size: 13px; line-height: 1.3; color: var(--text-2); }
+.cmp-status-line .ico { margin-top: 2px; color: var(--text-3); }
+.cmp-status-line.is-up .ico { color: var(--text); }
+.cmp-status-line strong { display: block; font-weight: 600; color: var(--text-2); }
+.cmp-status-line.is-up strong { color: var(--text); }
+.cmp-status .cmp-fine { margin: 0; }
+.cmp-date .input { width: 100%; color-scheme: dark; font-family: var(--mono); font-size: 13px; }
+.cmp-card-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 10px; }
+.cmp-date-state { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; font-size: 12px; color: var(--text-3); }
+.cmp-caption { margin: -4px 0 0; }
+
+/* ---------- Tableau des critères ---------- */
+.cmp-table { min-width: 620px; }
+.cmp-table th, .cmp-table td { padding: 7px 10px; }
+.cmp-table tbody th { font: 400 13.5px/1.3 var(--font); letter-spacing: 0; text-transform: none; color: var(--text); border-bottom: 1px solid var(--line); }
+.cmp-row-label { min-width: 190px; max-width: 300px; }
+.cmp-row-label .tag { margin-left: 8px; vertical-align: 1px; }
+.cmp-col-head { min-width: 118px; text-align: right !important; letter-spacing: 0 !important; text-transform: none !important; vertical-align: bottom; }
+.cmp-col-name { display: block; margin-top: 5px; font: 600 13px/1.25 var(--font); color: var(--text); overflow-wrap: anywhere; }
+.cmp-col-date { display: block; margin-top: 2px; font: 400 11px/1.3 var(--mono); color: var(--text-3); }
+.cmp-table td.num { min-width: 118px; font-size: 13px; }
+.cmp-table td.num .cmp-val { white-space: nowrap; }
+.cmp-table td.cmp-wrap .cmp-val { white-space: normal; }
+.cmp-table td.num .tag { margin-left: 6px; }
+.cmp-table tbody .cmp-group th { padding: 6px 10px; background: var(--bg-3); font: 400 10.5px/1.2 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--text-2); }
+.cmp-group th > span { display: inline-block; position: sticky; left: 10px; max-width: calc(100cqw - 70px); }
+.cmp-best-head, .cmp-best { border-left: 1px solid var(--line-2); }
+.cmp-best { min-width: 112px; white-space: nowrap; }
+.cmp-best-who { display: inline-flex; align-items: center; gap: 4px; margin-right: 8px; vertical-align: middle; }
+.cmp-rule { font: 400 11px/1 var(--mono); color: var(--text-3); }
+.cmp-tie { font-size: 12.5px; color: var(--text-2); }
+@container cmp (max-width: 620px) {
+  .cmp-row-label { min-width: 138px; max-width: 150px; font-size: 12.5px; }
+  .cmp-row-label .tag { display: table; margin: 4px 0 0; }
+  .cmp-table td.num, .cmp-col-head { min-width: 108px; }
+}
+
+/* ---------- Radar ---------- */
+.cmp-radar { display: grid; gap: 10px; margin-top: 10px; }
+.cmp-radar .chart-radar { max-width: 330px; margin: 0 auto; overflow: visible; }
+.cmp-radar .chart-legend { margin-top: 0; }
+.cmp-radar .cmp-fine { margin: 0; }
+.cmp-notes th, .cmp-notes td { padding: 4px 8px; }
+.cmp-notes tbody th { font: 400 13px/1.3 var(--font); letter-spacing: 0; text-transform: none; color: var(--text-2); border-bottom: 1px solid var(--line); }
+.cmp-notes thead th { padding-top: 0; }
+
+/* ---------- Chronologie alignée ---------- */
+.cmp-tl { --tl-label: 108px; --tl-share: 52px; display: grid; gap: 12px; margin-top: 10px; }
+.cmp-tl-head { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; margin-bottom: 6px; font-size: 13px; }
+.cmp-tl-head .cmp-fine { margin: 0; }
+.cmp-tl-rows { display: grid; grid-template-columns: var(--tl-label) minmax(0, 1fr) var(--tl-share); gap: 0 8px; }
+/* Une ligne de libellé par bande du graphique (12 px de bande + 6 px d'intervalle) */
+.cmp-tl-labels, .cmp-tl-shares { display: grid; grid-auto-rows: 18px; align-items: start; font-size: 12px; line-height: 12px; color: var(--text-2); }
+.cmp-tl-labels span { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.cmp-tl-labels .swatch { width: 9px; height: 9px; margin-right: 5px; vertical-align: 0; }
+.cmp-tl-shares { text-align: right; font-size: 11.5px; white-space: nowrap; }
+.cmp-tl-axis { position: relative; height: 16px; margin: -6px calc(var(--tl-share) + 8px) 0 calc(var(--tl-label) + 8px); border-top: 1px solid var(--line-2); font-size: 10px; color: var(--text-3); }
+.cmp-tl-axis span { position: absolute; top: 4px; transform: translateX(-50%); }
+.cmp-tl-axis span::before { content: ''; position: absolute; left: 50%; top: -4px; height: 4px; border-left: 1px solid var(--line-2); }
+.cmp-tl-axis-label { margin: 0; text-align: center; }
+@container cmp (max-width: 620px) {
+  .cmp-tl { --tl-label: 88px; --tl-share: 46px; }
+}
+
+/* ---------- Analyse ---------- */
+.cmp-an p { margin: 0 0 8px; line-height: 1.5; }
+.cmp-an p:last-child { margin-bottom: 0; }
+
+/* ---------- Pondération ---------- */
+.cmp-formula { margin: 0 0 8px; padding: 7px 9px; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius-sm); font-size: 12.5px; }
+.cmp-w-row { display: grid; grid-template-columns: 116px minmax(0, 1fr) 26px; gap: 10px; align-items: center; padding: 3px 0; font-size: 13px; color: var(--text-2); cursor: pointer; }
+.cmp-w-row input { width: 100%; min-width: 0; }
+.cmp-w-row output { text-align: right; color: var(--text); }
+.cmp-w-foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 8px 0 2px; }
+.cmp-w-sec .note { margin: 8px 0 0; }
+
+/* ---------- Les 9 régions candidates ---------- */
+.cmp-art .col-body { display: grid; gap: 10px; }
+.cmp-art-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+.cmp-art-bar .cmp-fine { margin: 0; }
+.cmp-variant button::first-letter { text-transform: uppercase; }
+.cmp-variant button:disabled { opacity: .45; cursor: not-allowed; }
+.cmp-art-progress { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 18px; min-height: 18px; }
+.cmp-art-progress .cmp-fine { margin: 0; }
+.cmp-art-run { display: inline-flex; align-items: center; gap: 8px; font: 400 12px/1 var(--mono); color: var(--text-2); }
+.cmp-art-run .bar { width: 120px; }
+.cmp-art-table { min-width: 1240px; }
+.cmp-art-table th, .cmp-art-table td { padding: 7px 6px; }
+.cmp-art-table thead th { letter-spacing: .06em; }
+.cmp-art-table tbody th { min-width: 176px; font: 400 13.5px/1.3 var(--font); letter-spacing: 0; text-transform: none; color: var(--text); border-bottom: 1px solid var(--line); }
+.cmp-art-name { display: block; font-weight: 600; }
+.cmp-art-table .cmp-sub { margin-top: 2px; font-size: 11.5px; }
+.cmp-pgda { display: block; font-family: var(--font); }
+.cmp-art-grp { text-align: center !important; border-left: 1px solid var(--line-2); }
+.cmp-art-grp .tag { margin-left: 8px; }
+.cmp-art-table td[data-col='sun'], .cmp-art-table th[data-sort='sun'], .cmp-art-table th[data-sort='comms'] { border-left: 1px solid var(--line-2); }
+.cmp-sort { all: unset; display: inline-flex; align-items: center; gap: 4px; cursor: pointer; }
+.cmp-sort:hover, .cmp-sort.is-on { color: var(--text); }
+.cmp-sort:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.cmp-sort-arrow { width: 9px; font-size: 9px; }
+.cmp-ref { display: block; margin-top: 1px; font: 400 11px/1.3 var(--mono); white-space: nowrap; }
+.cmp-art-table td[data-col] .cmp-val { white-space: nowrap; }
+.cmp-ref.is-in { color: var(--ok); }
+.cmp-ref.is-out { color: var(--warn); }
+.cmp-method { display: grid; gap: 6px; margin: 0; padding-left: 18px; font-size: 13px; color: var(--text-2); }
+
+@container cmp (max-width: 620px) {
+  .cmp-now { margin-left: 0; }
+  .cmp-art-table tbody th { min-width: 150px; }
+}
+@media (max-width: 620px) {
+  .cmp { padding: 12px; }
+}
+
+/* Dans l'application, le sélecteur de vue flotte en haut à gauche de la zone centrale : on lui laisse sa place. */
+#main > #view-compare > .cmp { padding-top: 62px; }

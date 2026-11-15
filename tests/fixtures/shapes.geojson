@@ -1,0 +1,20 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    { "type": "Feature", "properties": { "name": "Traverse" }, "geometry": { "type": "LineString", "coordinates": [[0, -89], [0, -88], [90, -88]] } },
+    { "type": "Feature", "properties": { "name": "Zone avec trou" }, "geometry": { "type": "Polygon", "coordinates": [
+      [[10, -86], [14, -86], [14, -85.5], [10, -85.5], [10, -86]],
+      [[11, -85.9], [12, -85.9], [12, -85.7], [11, -85.9]]
+    ] } },
+    { "type": "Feature", "properties": { "name": "Balises" }, "geometry": { "type": "MultiPoint", "coordinates": [[20, -87], [21, -87.1]] } },
+    { "type": "Feature", "properties": { "name": "Pistes" }, "geometry": { "type": "MultiLineString", "coordinates": [[[5, -84], [6, -84.2]], [[7, -84], [8, -84.2], [9, -84.1]]] } },
+    { "type": "Feature", "properties": { "name": "Deux zones" }, "geometry": { "type": "MultiPolygon", "coordinates": [
+      [[[40, -80], [42, -80], [42, -79], [40, -80]]],
+      [[[50, -80], [52, -80], [52, -79], [50, -80]]]
+    ] } },
+    { "type": "Feature", "properties": { "name": "Sans géométrie" }, "geometry": null },
+    { "type": "Feature", "properties": { "name": "Hors Lune" }, "geometry": { "type": "Point", "coordinates": [12, -95] } },
+    { "type": "Feature", "properties": { "name": "Collection" }, "geometry": { "type": "GeometryCollection", "geometries": [] } },
+    { "type": "Feature", "properties": { "name": "Ligne trop courte" }, "geometry": { "type": "LineString", "coordinates": [[1, -80]] } }
+  ]
+}

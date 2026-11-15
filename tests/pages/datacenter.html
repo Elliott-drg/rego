@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Data Center — page de test</title>
+  <!-- Page de test du Data Center seul (sans carte ni globe).
+       Deux façons de la servir, d'où la base calculée :
+         - racine du dépôt (tests/browser.mjs, serveStatic) : /tests/pages/datacenter.html, sans serveur local ;
+         - vrai server.mjs : le test la fait répondre à /datacenter-test.html, à côté de public/index.html.
+       Paramètres : ?lang=fr|en  &tab=embedded|sources|verify|cache  &site=<id de site>  &t=<date ISO> -->
+  <script>
+    // La base et les feuilles de style sont écrites ensemble : avec des <link> statiques, le navigateur
+    // préchargerait les CSS avant de connaître la base.
+    document.write('<base href="' + (location.pathname.includes('/tests/pages/') ? '../../public/' : './') + '">'
+      + '<link rel="icon" href="assets/favicon.png"><link rel="stylesheet" href="css/base.css"><link rel="stylesheet" href="css/datacenter.css">');
+  </script>
+  <style>
+    .testbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 12px 16px; }
+    .testbar .muted { margin-left: 6px; }
+  </style>
+</head>
+<body data-mode="expert">
+  <div class="testbar">
+    <button class="btn btn-primary" id="open" type="button">Data Center</button>
+    <div class="seg" id="lang"><button type="button" data-lang="fr">FR</button><button type="button" data-lang="en">EN</button></div>
+    <span class="muted mono" id="info"></span>
+  </div>
+  <script type="module">
+    import { state, set, select, on } from './js/core/store.js';
+    import { applyI18n } from './js/core/i18n.js';
+    import './js/i18n/core.js';
+    import { initToasts } from './js/ui/modal.js';
+    import { getSite, siteSelection, loadArtemisRegions } from './js/data/sites.js';
+    import { openDataCenter } from './js/ui/datacenter.js';
+
+    const q = new URLSearchParams(location.search);
+    initToasts();
+    if (q.get('lang')) set({ lang: q.get('lang') });
+    if (q.get('t')) set({ timeMs: Date.parse(q.get('t')) });
+    applyI18n();
+    await loadArtemisRegions();
+    const site = q.get('site') && getSite(q.get('site'));
+    if (site) select(siteSelection(site));
+
+    const paint = () => {
+      document.querySelectorAll('#lang button').forEach((b) => b.classList.toggle('is-on', b.dataset.lang === state.lang));
+      document.getElementById('info').textContent = `server=${state.server} · online=${state.online}`;
+    };
+    document.getElementById('lang').addEventListener('click', (e) => { if (e.target.dataset.lang) set({ lang: e.target.dataset.lang }); });
+    document.getElementById('open').addEventListener('click', () => openDataCenter());
+    on('change', paint); paint();
+
+    window.RF = { state, set, select, getSite, siteSelection, openDataCenter };
+    openDataCenter(q.get('tab') || undefined);
+    document.body.dataset.ready = '1';
+  </script>
+</body>
+</html>

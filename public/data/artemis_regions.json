@@ -1,0 +1,389 @@
+[
+ {
+  "id": "peak-near-cabeus-b",
+  "name": "Peak near Cabeus B",
+  "center": {
+   "lat": -83.661,
+   "lon": -68.71
+  },
+  "corners": [
+   {
+    "lat": -83.235,
+    "lon": -67.14
+   },
+   {
+    "lat": -83.832,
+    "lon": -64.78
+   },
+   {
+    "lat": -84.08,
+    "lon": -70.51
+   },
+   {
+    "lat": -83.461,
+    "lon": -72.43
+   }
+  ],
+  "sizeKm": [
+   19.9,
+   19.9
+  ],
+  "centerXYkm": [
+   -179.3,
+   69.86
+  ],
+  "method": "georef-image",
+  "residualKm": 0.79,
+  "imagePx": [
+   44.49,
+   271.57,
+   84.4,
+   311.47
+  ],
+  "published": null
+ },
+ {
+  "id": "haworth",
+  "name": "Haworth",
+  "center": {
+   "lat": -86.77,
+   "lon": -22.79
+  },
+  "corners": [
+   {
+    "lat": -86.118,
+    "lon": -26.68
+   },
+   {
+    "lat": -86.449,
+    "lon": -12.34
+   },
+   {
+    "lat": -87.401,
+    "lon": -16.97
+   },
+   {
+    "lat": -86.964,
+    "lon": -35.04
+   }
+  ],
+  "sizeKm": [
+   29.8,
+   29.8
+  ],
+  "centerXYkm": [
+   -37.94,
+   90.31
+  ],
+  "method": "georef-image",
+  "residualKm": 0.79,
+  "imagePx": [
+   318.6,
+   220.51,
+   378.6,
+   280.47
+  ],
+  "published": null
+ },
+ {
+  "id": "malapert-massif",
+  "name": "Malapert Massif",
+  "center": {
+   "lat": -86.009,
+   "lon": -0.18
+  },
+  "corners": [
+   {
+    "lat": -85.653,
+    "lon": -4.68
+   },
+   {
+    "lat": -85.655,
+    "lon": 4.34
+   },
+   {
+    "lat": -86.336,
+    "lon": 5.16
+   },
+   {
+    "lat": -86.334,
+    "lon": -5.55
+   }
+  ],
+  "sizeKm": [
+   20.8,
+   20.8
+  ],
+  "centerXYkm": [
+   -0.39,
+   121.07
+  ],
+  "method": "georef-image",
+  "residualKm": 0.79,
+  "imagePx": [
+   403.24,
+   167.82,
+   444.95,
+   209.55
+  ],
+  "published": null
+ },
+ {
+  "id": "mons-mouton-plateau",
+  "name": "Mons Mouton Plateau",
+  "center": {
+   "lat": -84.351,
+   "lon": 30.55
+  },
+  "corners": [
+   {
+    "lat": -83.97,
+    "lon": 15.47
+   },
+   {
+    "lat": -82.871,
+    "lon": 35.42
+   },
+   {
+    "lat": -84.304,
+    "lon": 46.54
+   },
+   {
+    "lat": -85.764,
+    "lon": 22.33
+   }
+  ],
+  "sizeKm": [
+   76.7,
+   57.5
+  ],
+  "centerXYkm": [
+   87.14,
+   147.64
+  ],
+  "method": "georef-image",
+  "residualKm": 0.79,
+  "imagePx": [
+   523.0,
+   77.52,
+   677.08,
+   193.11
+  ],
+  "published": null
+ },
+ {
+  "id": "mons-mouton",
+  "name": "Mons Mouton",
+  "center": {
+   "lat": -85.437,
+   "lon": 31.76
+  },
+  "corners": [
+   {
+    "lat": -85.337,
+    "lon": 27.37
+   },
+   {
+    "lat": -85.079,
+    "lon": 32.71
+   },
+   {
+    "lat": -85.51,
+    "lon": 36.32
+   },
+   {
+    "lat": -85.794,
+    "lon": 30.66
+   }
+  ],
+  "sizeKm": [
+   15.6,
+   15.9
+  ],
+  "centerXYkm": [
+   72.87,
+   117.7
+  ],
+  "method": "georef-image",
+  "residualKm": 0.79,
+  "imagePx": [
+   555.64,
+   179.53,
+   587.05,
+   211.44
+  ],
+  "published": null
+ },
+ {
+  "id": "nobile-rim-1",
+  "name": "Nobile Rim 1",
+  "center": {
+   "lat": -85.462,
+   "lon": 37.35
+  },
+  "corners": [
+   {
+    "lat": -85.383,
+    "lon": 31.72
+   },
+   {
+    "lat": -85.011,
+    "lon": 38.09
+   },
+   {
+    "lat": -85.496,
+    "lon": 43.12
+   },
+   {
+    "lat": -85.913,
+    "lon": 36.44
+   }
+  ],
+  "sizeKm": [
+   19.7,
+   19.4
+  ],
+  "centerXYkm": [
+   83.52,
+   109.44
+  ],
+  "method": "georef-image",
+  "residualKm": 0.79,
+  "imagePx": [
+   572.91,
+   192.58,
+   612.57,
+   231.61
+  ],
+  "published": null
+ },
+ {
+  "id": "nobile-rim-2",
+  "name": "Nobile Rim 2",
+  "center": {
+   "lat": -83.97,
+   "lon": 58.8
+  },
+  "corners": [
+   {
+    "lat": -84.062,
+    "lon": 54.46
+   },
+   {
+    "lat": -83.52,
+    "lon": 57.82
+   },
+   {
+    "lat": -83.844,
+    "lon": 62.99
+   },
+   {
+    "lat": -84.417,
+    "lon": 59.94
+   }
+  ],
+  "sizeKm": [
+   19.8,
+   19.9
+  ],
+  "centerXYkm": [
+   156.56,
+   94.81
+  ],
+  "method": "georef-image",
+  "residualKm": 0.79,
+  "imagePx": [
+   719.6,
+   221.54,
+   759.48,
+   261.55
+  ],
+  "published": null
+ },
+ {
+  "id": "de-gerlache-rim-2",
+  "name": "de Gerlache Rim 2",
+  "center": {
+   "lat": -88.233,
+   "lon": -64.61
+  },
+  "corners": [
+   {
+    "lat": -87.79,
+    "lon": -60.54
+   },
+   {
+    "lat": -88.33,
+    "lon": -49.37
+   },
+   {
+    "lat": -88.663,
+    "lon": -71.35
+   },
+   {
+    "lat": -88.029,
+    "lon": -77.48
+   }
+  ],
+  "sizeKm": [
+   19.9,
+   20.0
+  ],
+  "centerXYkm": [
+   -48.4,
+   22.97
+  ],
+  "method": "georef-image",
+  "residualKm": 0.79,
+  "imagePx": [
+   307.5,
+   365.74,
+   347.58,
+   405.95
+  ],
+  "published": null
+ },
+ {
+  "id": "slater-plain",
+  "name": "Slater Plain",
+  "center": {
+   "lat": -87.178,
+   "lon": 125.37
+  },
+  "corners": [
+   {
+    "lat": -87.637,
+    "lon": 123.4
+   },
+   {
+    "lat": -87.066,
+    "lon": 116.32
+   },
+   {
+    "lat": -86.717,
+    "lon": 126.78
+   },
+   {
+    "lat": -87.215,
+    "lon": 134.9
+   }
+  ],
+  "sizeKm": [
+   19.9,
+   20.2
+  ],
+  "centerXYkm": [
+   69.79,
+   -49.54
+  ],
+  "method": "georef-image",
+  "residualKm": 0.79,
+  "imagePx": [
+   545.05,
+   511.37,
+   585.09,
+   551.92
+  ],
+  "published": null
+ }
+]

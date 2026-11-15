@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Regolith Finder</title>
+  <link rel="icon" href="assets/favicon.png">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/shell.css">
+  <link rel="stylesheet" href="css/map2d.css">
+  <link rel="stylesheet" href="css/globe.css">
+  <link rel="stylesheet" href="css/timebar.css">
+  <link rel="stylesheet" href="css/compare.css">
+  <link rel="stylesheet" href="css/energy.css">
+  <link rel="stylesheet" href="css/datacenter.css">
+  <link rel="stylesheet" href="css/tools.css">
+  <script type="importmap">{ "imports": { "three": "./vendor/three.module.js" } }</script>
+</head>
+<body data-mode="simple">
+  <div id="app">
+    <header id="header"></header>
+    <aside id="left" aria-label="Calques et sites"></aside>
+    <main id="main">
+      <div id="view-map2d" class="view"></div>
+      <div id="view-globe" class="view" hidden></div>
+      <div id="view-compare" class="view" hidden></div>
+      <div id="main-overlays"></div>
+      <div id="loading" class="loading">
+        <img src="assets/logo-256.png" alt="" width="120" height="120" onerror="this.remove()">
+        <div id="loading-text">Regolith Finder…</div>
+        <div class="bar"><i id="loading-bar" style="width:2%"></i></div>
+      </div>
+    </main>
+    <aside id="right" aria-label="Site sélectionné"></aside>
+    <footer id="timebar"></footer>
+  </div>
+  <noscript>Regolith Finder a besoin de JavaScript. / Regolith Finder needs JavaScript.</noscript>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

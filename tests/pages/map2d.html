@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Page de test de la carte 2D seule (tests/map2d.browser.mjs). Servie depuis la racine du dépôt :
+       <base> renvoie les chemins relatifs (modules, css, data/) vers public/. -->
+  <base href="/public/">
+  <title>Regolith Finder — test de la carte 2D</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/map2d.css">
+  <style>#main { position: fixed; inset: 0; }</style>
+</head>
+<body data-mode="expert">
+  <main id="main"><div id="view-map2d" class="view"></div></main>
+  <script type="module">
+    // Paramètres : ?lang=fr|en ; ?layers=1 charge aussi i18n/layers.js (libellés des calques, tenus par l'intégrateur) ;
+    // ?nodem=1 démarre sans le relief ; ?nowebgl=1 simule un navigateur sans WebGL 2.
+    const q = new URLSearchParams(location.search);
+    if (q.get('nowebgl') === '1') {
+      const getContext = HTMLCanvasElement.prototype.getContext;
+      HTMLCanvasElement.prototype.getContext = function (type, ...rest) { return type === 'webgl2' ? null : getContext.call(this, type, ...rest); };
+    }
+    const store = await import('./js/core/store.js');
+    store.set({ lang: q.get('lang') || 'fr', cvd: 'none', timeMs: Date.UTC(2026, 10, 15, 12) });
+    await import('./js/i18n/core.js');
+    if (q.get('layers') === '1') await import('./js/i18n/layers.js');
+    const [registry, sites, map2d, manager, engine, coords, terrain, i18n, palettes] = await Promise.all([
+      import('./js/data/registry.js'), import('./js/data/sites.js'), import('./js/views/map2d.js'), import('./js/layers/manager.js'),
+      import('./js/science/engine.js'), import('./js/core/coords.js'), import('./js/science/terrain.js'), import('./js/core/i18n.js'), import('./js/layers/palettes.js'),
+    ]);
+    if (q.get('nodem') !== '1') await registry.ensureData('sp_dem');
+    await sites.loadArtemisRegions();
+    const map = map2d.createMap2D(document.getElementById('view-map2d'));
+    map.setActive(true);
+    window.T = { ...store, map, layers: manager.layers, engine, coords, terrain, registry, sites, palettes, t: i18n.t };
+    document.body.dataset.ready = '1';
+  </script>
+</body>
+</html>

@@ -1,0 +1,5 @@
+{
+  "type": "FeatureCollection",
+  "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:IAU:2015:30100" } },
+  "features": [ { "type": "Feature", "properties": { "name": "Malapert" }, "geometry": { "type": "Point", "coordinates": [-0.18, -86.009] } } ]
+}

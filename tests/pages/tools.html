@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Regolith Finder — banc d'essai des outils annexes</title>
+  <!-- Page de test : monte les outils annexes seuls, dans une coquille minimale qui reprend les zones de
+       public/index.html (#header #left #main #right #timebar). Servie avec la racine du dépôt :
+       http://127.0.0.1:<port>/tests/pages/tools.html — toutes les ressources viennent de /public/. -->
+  <base href="/public/">
+  <link rel="icon" href="assets/favicon.png">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/tools.css">
+  <style>
+    #header button { flex: none; }
+    #header .bench-tools { display: flex; gap: 6px; overflow-x: auto; min-width: 0; }
+    #view-map2d { background: radial-gradient(circle at 50% 46%, #3a4150 0, #1c212b 38%, #07090d 78%); }
+    .bench-pad { padding: 14px; display: grid; gap: 10px; }
+    .sitelist { display: grid; gap: 4px; }
+    .toolgrid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+    #timebar { height: var(--timebar-h); display: flex; align-items: center; padding: 0 14px; color: var(--text-3); }
+  </style>
+</head>
+<body data-mode="simple">
+  <div id="app">
+    <header id="header">
+      <strong>Banc d'essai</strong>
+      <div class="bench-tools">
+        <button class="btn btn-sm" id="b-import" type="button">Import</button>
+        <button class="btn btn-sm" id="b-measure" type="button">Mesure</button>
+        <button class="btn btn-sm" id="b-history" type="button">Historique</button>
+        <button class="btn btn-sm" id="b-about" type="button">À propos</button>
+        <button class="btn btn-sm" id="b-tutorial" type="button">Tutoriel</button>
+        <button class="btn btn-sm" id="b-demo" type="button">Démo</button>
+        <button class="btn btn-sm" id="b-lang" type="button">FR / EN</button>
+      </div>
+    </header>
+    <aside id="left"><div class="bench-pad">
+      <div class="eyebrow">Sites</div><div class="sitelist" id="sitelist"></div>
+      <details class="col" open><summary>Calques</summary><div class="col-body">sun_now · earth_now</div></details>
+      <div class="toolgrid"><span class="btn btn-sm">Énergie</span><span class="btn btn-sm">Données</span></div>
+    </div></aside>
+    <main id="main">
+      <div id="view-map2d" class="view"></div>
+      <div id="main-overlays"><div class="float viewswitch glass"><div class="seg"><button type="button" class="is-on">2D</button><button type="button">3D</button><button type="button">Comparer</button></div></div></div>
+    </main>
+    <aside id="right"><div class="bench-pad"><div class="eyebrow">Sélection</div><div id="selection" class="mono">—</div></div></aside>
+    <footer id="timebar">barre de temps (hors du périmètre de ce banc)</footer>
+  </div>
+  <script type="module">
+    import { state, set, on, select } from './js/core/store.js';
+    import { applyI18n } from './js/core/i18n.js';
+    import './js/i18n/core.js';
+    import { tryData } from './js/data/registry.js';
+    import { loadArtemisRegions, sitesOfKind, siteSelection } from './js/data/sites.js';
+    import { initToasts } from './js/ui/modal.js';
+    import { layers } from './js/layers/manager.js';
+    import * as importer from './js/ui/importer.js';
+    import * as measure from './js/ui/measure.js';
+    import * as modals from './js/ui/modals.js';
+    import * as demo from './js/ui/demo.js';
+
+    const $ = (id) => document.getElementById(id);
+    initToasts();
+    applyI18n();
+    const narrow = window.innerWidth < 980;
+    if (narrow) set({ leftOpen: false, rightOpen: false });
+    const drawers = () => { $('app').classList.toggle('no-left', !state.leftOpen); $('app').classList.toggle('no-right', !state.rightOpen); };
+    on('change:leftOpen', drawers); on('change:rightOpen', drawers); drawers();
+
+    await tryData('manifest');
+    await tryData('sp_dem');
+    await loadArtemisRegions();
+    for (const s of sitesOfKind('artemis').slice(0, 4)) {
+      const b = document.createElement('button'); b.type = 'button'; b.className = 'btn btn-sm'; b.textContent = s.name;
+      b.onclick = () => select(siteSelection(s)); $('sitelist').append(b);
+    }
+    measure.mountMeasure($('main-overlays'));
+    on('change:selection', (s) => { $('selection').textContent = s ? `${s.name} (${s.kind})` : '—'; });
+
+    const flyTo = [];
+    on('view:flyTo', (p) => flyTo.push(p));
+    $('b-import').onclick = () => importer.openImporter();
+    $('b-measure').onclick = () => set({ tool: state.tool === 'measure' ? null : 'measure' });
+    $('b-history').onclick = () => modals.openHistory();
+    $('b-about').onclick = () => modals.openFounders();
+    $('b-tutorial').onclick = () => modals.openTutorial();
+    $('b-demo').onclick = () => (state.demo ? demo.stopDemo() : demo.startDemo());
+    $('b-lang').onclick = () => set({ lang: state.lang === 'fr' ? 'en' : 'fr' });
+
+    window.T = { state, set, select, layers, importer, measure, modals, demo, flyTo };
+    document.body.dataset.ready = '1';
+  </script>
+</body>
+</html>

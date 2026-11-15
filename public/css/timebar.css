@@ -1,0 +1,83 @@
+/* Barre de temps (ui/timebar.js) et panorama d'horizon (views/skyview.js). */
+
+/* ---------- Barre de temps ---------- */
+/* La largeur utile dépend des panneaux ouverts, pas de la fenêtre : la mise en page suit la largeur de la barre elle-même. */
+.tb-host { container: timebar / inline-size; }
+.tb { display: grid; gap: 5px; padding: 6px 10px 5px; min-width: 0; }
+.tb-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; min-width: 0; }
+.tb-group { display: flex; align-items: center; gap: 5px; min-width: 0; }
+.tb-group-jump { margin-left: auto; }
+.tb .btn, .tb .input { height: 32px; }
+.tb .seg button { height: 26px; padding: 0 9px; }
+.tb-play { width: 38px; padding: 0; flex: none; }
+.tb-date { width: 178px; padding: 0 5px; font-family: var(--font); font-size: 13.5px; font-variant-numeric: tabular-nums; color-scheme: dark; }
+.tb-utc { font-size: 11px; letter-spacing: .08em; }
+.tb-now, .tb-jump { padding: 0 8px; gap: 4px; }
+.tb-eq { min-width: 62px; color: var(--text-2); font-size: 12px; white-space: nowrap; }
+.tb-speed-select, .tb-scale-select { display: none; padding: 0 6px; }
+.tb-speed-select { width: 148px; } .tb-scale-select { width: 108px; }
+.tb-narrow { display: none; }
+
+.tb-trackrow { display: flex; align-items: flex-start; gap: 8px; min-width: 0; }
+.tb-bandlabels { display: grid; grid-auto-rows: 10px; row-gap: 2px; flex: none; font: 400 9.5px/10px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--text-2); cursor: help; }
+.tb-bandlabels > span { display: flex; align-items: center; gap: 5px; white-space: nowrap; }
+.tb-bandlabels.is-off { visibility: hidden; }
+.tb-bandlabels .ico { vertical-align: 0; }
+.tb-swatch { width: 12px; height: 8px; border-radius: 1px; flex: none; }
+.tb-swatch-sun { background: var(--sun); }
+.tb-swatch-earth { background: repeating-linear-gradient(135deg, var(--earth) 0 1.5px, color-mix(in srgb, var(--earth) 38%, transparent) 1.5px 4px); }
+
+.tb-track { position: relative; flex: 1 1 auto; min-width: 0; height: 42px; cursor: pointer; touch-action: none; user-select: none; -webkit-user-select: none; }
+.tb-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; border-radius: 2px; }
+.tb-hint { position: absolute; left: 6px; right: 6px; top: 0; height: 22px; display: flex; align-items: center; font-size: 11.5px; color: var(--text-3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; pointer-events: none; }
+.tb-busy { position: absolute; right: 4px; top: 4px; padding: 1px 6px; font-size: 10.5px; color: var(--text); background: color-mix(in srgb, var(--bg) 82%, transparent); border: 1px solid var(--line-2); border-radius: 3px; pointer-events: none; }
+.tb-progress { position: absolute; left: 0; top: 26.5px; height: 2px; background: var(--accent); pointer-events: none; }
+.tb-thumb { position: absolute; top: 0; width: 0; height: 33px; pointer-events: none; }
+.tb-thumb::before { content: ''; position: absolute; left: -1px; top: 0; width: 2px; height: 100%; background: var(--text); box-shadow: 0 0 0 1px color-mix(in srgb, var(--bg) 70%, transparent); }
+.tb-thumb::after { content: ''; position: absolute; left: -7px; top: 20.5px; width: 14px; height: 14px; border-radius: 50%; background: var(--accent); border: 2px solid var(--text); box-sizing: border-box; }
+.tb-thumb:focus-visible { outline: none; } .tb-thumb:focus-visible::after { box-shadow: 0 0 0 3px var(--accent-soft), 0 0 0 1px var(--accent); }
+.tb-tip { position: absolute; bottom: calc(100% + 6px); transform: translateX(-50%); padding: 3px 8px; font-size: 11.5px; white-space: nowrap; color: var(--text); background: var(--bg-3); border: 1px solid var(--line-2); border-radius: var(--radius-sm); box-shadow: var(--shadow); pointer-events: none; z-index: 6; }
+
+/* Paliers selon la largeur de la barre : tout en clair au-delà de 1440 px ; en dessous, « Maintenant » et les sauts
+   sont réduits à leur pictogramme ; sous 1090 px les vitesses passent en liste déroulante. */
+@container timebar (max-width: 1440px) {
+  .tb-jump .tb-wide, .tb-now .tb-wide { display: none; }
+}
+@container timebar (max-width: 1090px) {
+  .tb-speed-seg, .tb-eq { display: none; } .tb-speed-select { display: block; }
+  .tb .seg button { padding: 0 7px; }
+}
+/* Petit écran : deux lignes de commandes, échelle en liste, libellés des bandes réduits à leur pictogramme */
+@container timebar (max-width: 700px) {
+  .tb-scale-seg { display: none; } .tb-scale-select { display: block; }
+  .tb { padding: 6px 8px 5px; }
+  .tb-group-time { flex: 1 1 100%; }
+  .tb-group-speed { flex: 1 1 0; } .tb-speed-select { width: 100%; }
+  .tb-speed-select, .tb-scale-select { padding: 0 3px; font-size: 13px; } .tb-scale-select { width: 104px; }
+  .tb-jump { padding: 0 6px; }
+  .tb-bandlabels .tb-wide { display: none; } .tb-bandlabels .tb-narrow { display: inline-flex; }
+  .tb-swatch { width: 8px; }
+}
+
+/* ---------- Panorama d'horizon ---------- */
+.sky { min-width: 0; container: sky / inline-size; }
+.sky-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 10px; margin-bottom: 6px; }
+.sky-head .seg button { height: 26px; padding: 0 9px; font-size: 13px; }
+.sky-center { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; }
+.sky-stage { position: relative; min-width: 0; }
+.sky-canvas { display: block; width: 100%; height: 180px; border-radius: var(--radius-sm); cursor: crosshair; touch-action: pan-y; }
+.sky-readout { min-height: 17px; margin-top: 4px; font-size: 12px; color: var(--text-3); } .sky-readout.mono { font-size: 11.5px; color: var(--text-2); }
+.sky-summary { margin-top: 2px; font-size: 13px; color: var(--text); }
+.sky-noterrain { margin-top: 6px; }
+.sky-legend { margin-top: 4px; font-size: 12px; gap: 2px 12px; }
+.sky-legend i { border-top-width: 2px; width: 16px; }
+.sky-stats { margin-top: 8px; }
+.sky-stats .stat-label { flex-wrap: wrap; row-gap: 3px; }
+.sky-stats .stat-label .tag { margin-left: auto; }
+.sky-stats .stat-value small { margin-left: 2px; }
+.sky-stats .stat-value.sky-value-long { font-size: 14px; line-height: 1.25; }
+.sky-foot { margin-top: 6px; font-size: 11.5px; line-height: 1.35; color: var(--text-3); }
+.sky-empty { padding: 18px 12px; }
+.sky-compact .sky-head { margin-bottom: 4px; }
+/* Fiche étroite (panneau de droite) : une carte par ligne, chaque chiffre tient sur une ligne */
+@container sky (max-width: 460px) { .sky-stats { grid-template-columns: 1fr; gap: 6px; } .sky-stats .stat { padding: 7px 10px; } }

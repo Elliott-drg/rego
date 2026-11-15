@@ -1,0 +1,41 @@
+// Chaînes de la carte 2D du pôle Sud (views/map2d.js).
+import { register } from '../core/i18n.js';
+
+register({
+  fr: {
+    'map2d.aria': 'Carte du pôle Sud lunaire. Flèches pour se déplacer, + et − pour zoomer, 0 pour revenir au pôle.',
+    'map2d.zoomIn': 'Zoomer', 'map2d.zoomOut': 'Dézoomer',
+    'map2d.resetView': 'Revenir à la vue d’ensemble, centrée sur le pôle',
+    'map2d.centerSel': 'Centrer sur le lieu sélectionné',
+    'map2d.readout.height': 'hauteur', 'map2d.readout.slope': 'pente',
+    'map2d.readout.outside': 'hors de la carte (au nord de 75°S)',
+    'map2d.sun': 'Soleil', 'map2d.earth': 'Terre',
+    'map2d.legend.noData': 'sans donnée',
+    'map2d.legend.landable': 'pente inférieure à {v}',
+    'map2d.legend.earthNow': 'Terre au-dessus de l’horizon du relief (marge {v})',
+    'map2d.legend.psr': 'jamais éclairé par le Soleil',
+    'map2d.measure.total': 'total {d}',
+    'map2d.scale.km': '{n} km', 'map2d.scale.m': '{n} m',
+    'map2d.noWebgl': 'Carte 2D indisponible : ce navigateur ne fournit pas WebGL 2, nécessaire au calcul des ombres.',
+    'map2d.contextLost': 'Affichage graphique interrompu par le navigateur. La carte se redessinera dès que le contexte WebGL sera rétabli.',
+    'map2d.noDem': 'Relief LOLA indisponible : la carte affiche seulement la grille et les sites, sans ombres.',
+  },
+  en: {
+    'map2d.aria': 'Map of the lunar south pole. Arrow keys to pan, + and − to zoom, 0 to return to the pole.',
+    'map2d.zoomIn': 'Zoom in', 'map2d.zoomOut': 'Zoom out',
+    'map2d.resetView': 'Back to the overview, centred on the pole',
+    'map2d.centerSel': 'Centre on the selected place',
+    'map2d.readout.height': 'height', 'map2d.readout.slope': 'slope',
+    'map2d.readout.outside': 'off the map (north of 75°S)',
+    'map2d.sun': 'Sun', 'map2d.earth': 'Earth',
+    'map2d.legend.noData': 'no data',
+    'map2d.legend.landable': 'slope below {v}',
+    'map2d.legend.earthNow': 'Earth above the terrain horizon (margin {v})',
+    'map2d.legend.psr': 'never lit by the Sun',
+    'map2d.measure.total': 'total {d}',
+    'map2d.scale.km': '{n} km', 'map2d.scale.m': '{n} m',
+    'map2d.noWebgl': 'The 2D map is unavailable: this browser does not provide WebGL 2, which the shadow computation needs.',
+    'map2d.contextLost': 'The browser interrupted graphics rendering. The map will redraw as soon as the WebGL context is restored.',
+    'map2d.noDem': 'LOLA terrain unavailable: the map only shows the grid and the sites, without shadows.',
+  },
+});

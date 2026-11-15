@@ -1,0 +1,5 @@
+{
+  "type": "FeatureCollection",
+  "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:IAU:2015:30135" } },
+  "features": [ { "type": "Feature", "properties": { "name": "Point en mètres (stéréographique polaire Sud)" }, "geometry": { "type": "Point", "coordinates": [-37940.0, 90310.0] } } ]
+}

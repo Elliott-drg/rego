@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Regolith Finder — page de test du module Énergie</title>
+  <!-- Page servie par serveStatic(racine du dépôt) : /tests/pages/energy.html. Tous les chemins relatifs partent de /public/. -->
+  <base href="/public/">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/energy.css">
+</head>
+<body data-mode="simple" style="overflow:auto">
+  <main style="padding:20px; display:grid; gap:12px; justify-items:start">
+    <p id="status" class="muted">Chargement du relief…</p>
+    <button class="btn btn-primary" id="open" type="button" disabled>Ouvrir le dimensionnement énergétique</button>
+    <p class="dim">Paramètres d'URL : <code>?nodem=1</code> (sans relief LOLA).</p>
+  </main>
+  <script type="module">
+    // Monte le module Énergie seul : état, traductions communes, relief, sites, notifications.
+    import { state, set, on, select } from './js/core/store.js';
+    import './js/i18n/core.js';
+    import { applyI18n } from './js/core/i18n.js';
+    import { initToasts } from './js/ui/modal.js';
+    import { tryData } from './js/data/registry.js';
+    import { loadArtemisRegions } from './js/data/sites.js';
+    import { openEnergy } from './js/ui/energy.js';
+
+    initToasts();
+    document.body.dataset.mode = state.mode; document.documentElement.dataset.cvd = state.cvd; applyI18n();
+    on('change:mode', (m) => { document.body.dataset.mode = m; });
+    on('change:cvd', (c) => { document.documentElement.dataset.cvd = c; });
+    if (!new URLSearchParams(location.search).has('nodem')) await tryData('sp_dem');
+    await loadArtemisRegions();
+    window.RF = { state, set, select, openEnergy };
+    const btn = document.getElementById('open');
+    btn.disabled = false; btn.addEventListener('click', () => openEnergy());
+    document.getElementById('status').textContent = 'Prêt.';
+    document.body.dataset.ready = '1';
+  </script>
+</body>
+</html>

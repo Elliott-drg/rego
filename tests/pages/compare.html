@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Regolith Finder — vue « Comparer » seule (page de test)</title>
+  <!-- Servie depuis la racine du dépôt (tests/browser.mjs : serveStatic(racine)). Tous les chemins
+       relatifs, y compris les fetch('data/…') du registre, partent donc de /public/. -->
+  <base href="/public/">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/compare.css">
+</head>
+<body data-mode="expert">
+  <!-- Même élément que dans index.html : la vue occupe toute la zone et défile à l'intérieur. -->
+  <div id="view-compare" class="view"></div>
+  <script type="module">
+    // Monte la vue « Comparer » sans le reste de l'application. Paramètres d'URL : ?lang=fr|en, ?t=<ms UTC>.
+    import { state, set, on, select, addToCompare } from './js/core/store.js';
+    import './js/i18n/core.js';
+    import * as registry from './js/data/registry.js';
+    import { loadArtemisRegions, getSite, siteSelection } from './js/data/sites.js';
+    import { initToasts } from './js/ui/modal.js';
+    import * as engine from './js/science/engine.js';
+    import * as i18n from './js/core/i18n.js';
+    import * as scoring from './js/science/scoring.js';
+    import { clearHorizonCache } from './js/science/sitecalc.js';
+    import { mountCompare } from './js/ui/compare.js';
+
+    const q = new URLSearchParams(location.search);
+    set({ lang: q.get('lang') === 'en' ? 'en' : 'fr', cvd: 'none', timeMs: Number(q.get('t')) || Date.UTC(2026, 10, 15, 12) });
+    document.documentElement.lang = state.lang;
+    initToasts();
+    // Mêmes règles transverses que main.js
+    on('change:params', () => { engine.clearEngineCache(); clearHorizonCache(); });
+    on('change:cvd', (c) => { document.documentElement.dataset.cvd = c; });
+
+    await registry.tryData('manifest');
+    await registry.tryData('sp_dem');
+    await loadArtemisRegions();
+    const view = mountCompare(document.getElementById('view-compare'));
+    view.setActive(true);
+    // Données secondaires en arrière-plan, comme dans l'application
+    const secondary = Promise.all(['sp_sun_avg', 'sp_earth_avg', 'sp_psr', 'sp_tmax', 'sp_tmin', 'sp_tavg', 'global_ldem'].map((id) => registry.tryData(id)));
+    window.RF = { state, set, select, addToCompare, getSite, siteSelection, engine, registry, i18n, scoring, view, secondary };
+    document.body.dataset.ready = '1';
+  </script>
+</body>
+</html>

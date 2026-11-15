@@ -1,0 +1,6 @@
+{ "type": "FeatureCollection", "features": [
+  { "type": "Feature", "properties": { "name": "Jury A — crête", "note": "point de test" }, "geometry": { "type": "Point", "coordinates": [-0.5, -85.9] } },
+  { "type": "Feature", "properties": { "name": "Jury B — plaine" }, "geometry": { "type": "Point", "coordinates": [31.0, -84.6] } },
+  { "type": "Feature", "properties": { "name": "Traverse" }, "geometry": { "type": "LineString", "coordinates": [[-0.5, -85.9], [10.0, -85.5], [31.0, -84.6]] } },
+  { "type": "Feature", "properties": { "name": "Zone d'étude" }, "geometry": { "type": "Polygon", "coordinates": [[[120, -87.0], [130, -87.0], [130, -87.5], [120, -87.5], [120, -87.0]]] } }
+] }

@@ -1,0 +1,56 @@
+<!doctype html>
+<!-- Page de test : monte seulement le panorama d'horizon et la barre de temps (tests/sky-timebar.browser.mjs).
+     Servie par serveStatic() avec la racine du dépôt ; <base> renvoie les chemins relatifs vers public/.
+     Paramètres : ?dem=0 ne charge pas le relief (état « relief indisponible »). -->
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <base href="/public/">
+  <title>Regolith Finder — test panorama et barre de temps</title>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/timebar.css">
+  <style>
+    body { overflow: auto; display: grid; grid-template-rows: minmax(0, 1fr) auto; height: 100dvh; }
+    #stage { overflow: auto; padding: 12px; display: grid; gap: 12px; align-content: start; }
+    #panel { width: 344px; max-width: 100%; background: var(--bg-1); border: 1px solid var(--line); padding: 12px 14px; }
+    #compare { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; max-width: 1100px; }
+    #compare > div { background: var(--bg-1); border: 1px solid var(--line); padding: 8px; }
+    #timebar-box { max-width: 100%; margin: 0 auto; width: 100%; }
+    #timebar { background: var(--bg-1); border-top: 1px solid var(--line); min-width: 0; }
+  </style>
+</head>
+<body data-mode="simple">
+  <div id="stage">
+    <div id="panel"><div id="sky"></div></div>
+    <div id="compare"></div>
+  </div>
+  <div id="timebar-box"><footer id="timebar"></footer></div>
+  <script type="module">
+    import { state, set, on, select } from './js/core/store.js';
+    import './js/i18n/core.js';
+    import { ensureData } from './js/data/registry.js';
+    import * as engine from './js/science/engine.js';
+    import { createSkyView } from './js/views/skyview.js';
+    import { mountTimebar, timeWindow, speedEquivalent } from './js/ui/timebar.js';
+
+    const toasts = [];
+    on('toast', (x) => toasts.push(x));
+    document.documentElement.dataset.cvd = state.cvd;
+    on('change:cvd', (c) => { document.documentElement.dataset.cvd = c; });
+    if (new URLSearchParams(location.search).get('dem') !== '0') await ensureData('sp_dem');
+
+    mountTimebar(document.getElementById('timebar'));
+    const sky = createSkyView(document.getElementById('sky'));
+    window.RF = {
+      state, set, on, select, engine, toasts, sky, timeWindow, speedEquivalent,
+      /** Trois panoramas compacts à site et date imposés, comme dans la vue comparaison. */
+      compare(scenarios) {
+        const host = document.getElementById('compare'); host.replaceChildren();
+        return scenarios.map((sc) => { const cell = document.createElement('div'); host.append(cell); return createSkyView(cell, { compact: true, site: sc.site, timeMs: sc.timeMs }); });
+      },
+    };
+    document.body.dataset.ready = '1';
+  </script>
+</body>
+</html>

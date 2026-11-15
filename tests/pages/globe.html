@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Regolith Finder — page de test du globe 3D</title>
+  <!-- Servie depuis la racine du dépôt (serveStatic(racine)) : tous les chemins relatifs partent de /public/. -->
+  <base href="/public/">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/globe.css">
+  <script type="importmap">{ "imports": { "three": "/public/vendor/three.module.js" } }</script>
+</head>
+<body data-mode="simple">
+  <!-- Paramètres : ?lang=fr|en  ?t=<ms UTC>  ?nowebgl=1 (simule un navigateur sans WebGL 2) -->
+  <main id="main" style="position: fixed; inset: 0;">
+    <div id="view-globe" class="view"></div>
+  </main>
+  <script type="module">
+    import { state, set, on, emit, select, addToCompare } from './js/core/store.js';
+    import './js/i18n/core.js';
+    import './js/i18n/layers.js';
+    import { layers } from './js/layers/manager.js';
+    import { loadArtemisRegions } from './js/data/sites.js';
+    import { createGlobe } from './js/views/globe3d.js';
+
+    const q = new URLSearchParams(location.search);
+    if (q.get('lang')) set({ lang: q.get('lang') });
+    if (q.get('t')) set({ timeMs: Number(q.get('t')) });
+    if (q.get('nowebgl')) {
+      const real = HTMLCanvasElement.prototype.getContext;
+      HTMLCanvasElement.prototype.getContext = function (type, ...rest) { return /webgl/.test(type) ? null : real.call(this, type, ...rest); };
+    }
+    document.documentElement.lang = state.lang;
+    document.documentElement.dataset.cvd = state.cvd;
+    on('change:cvd', (c) => { document.documentElement.dataset.cvd = c; });
+    set({ view: 'globe' });
+    await loadArtemisRegions();
+    const globe = createGlobe(document.getElementById('view-globe'));
+    globe.setActive(true);
+    window.addEventListener('resize', () => globe.resize());
+    window.RFT = { state, set, on, emit, select, addToCompare, layers, globe };
+    document.body.dataset.ready = '1';
+  </script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+Nom;Latitude (deg);Longitude (deg);Altitude (m)
+Crête;-89,45;-137,3;1200
+Plateau;-84,6;31,0;6000
+Latitude illisible;abc;12,5;
+Hors Lune;-95,2;10;
+Longitude hors bornes;-80;400;
+Ligne courte;-80
+Dernier;-88,5;359,5;

@@ -1,0 +1,9 @@
+{
+  "type": "FeatureCollection",
+  "name": "points-test",
+  "features": [
+    { "type": "Feature", "properties": { "name": "Bord de Shackleton", "note": "crête" }, "geometry": { "type": "Point", "coordinates": [-137.3, -89.45] } },
+    { "type": "Feature", "properties": { "name": "Près de Cabeus B (longitude 0-360)" }, "geometry": { "type": "Point", "coordinates": [291.3, -83.66] } },
+    { "type": "Feature", "id": "p3", "properties": { "rang": 3, "valide": true, "objet": { "x": 1 } }, "geometry": { "type": "Point", "coordinates": [30.0, -85.2, 1250.5] } }
+  ]
+}

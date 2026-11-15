@@ -1,0 +1,24 @@
+// Test de fumée de la coquille : démarrage, sélection d'un site, fiche, anglais, mobile.
+import { serveStatic, openPage, OUT } from './browser.mjs';
+const srv = await serveStatic();
+const { browser, page, problems } = await openPage(srv.url);
+await page.waitForFunction(() => document.body.dataset.ready === '1', null, { timeout: 120000 });
+await page.evaluate(() => { window.RF.set({ timeMs: Date.UTC(2026, 10, 15, 12) }); });
+await page.click('.siteitem');
+await page.waitForSelector('.sheet-head');
+await page.waitForTimeout(1500);
+await page.screenshot({ path: `${OUT}/shell-fr.png` });
+const txt = await page.evaluate(() => document.getElementById('right').innerText);
+console.log(txt.split('\n').filter(Boolean).slice(0, 60).join(' | '));
+await page.evaluate(() => window.RF.set({ lang: 'en', mode: 'expert' }));
+await page.waitForTimeout(800);
+await page.evaluate(() => { document.getElementById('right').scrollTop = 900; });
+await page.screenshot({ path: `${OUT}/shell-en-expert.png` });
+await page.setViewportSize({ width: 390, height: 844 });
+await page.evaluate(() => window.RF.set({ rightOpen: true }));
+await page.waitForTimeout(500);
+await page.screenshot({ path: `${OUT}/shell-mobile.png` });
+const missing = await page.evaluate(() => [...document.querySelectorAll('body *')].filter((e) => e.children.length === 0 && /^(shell|left|right|layer|layergroup|kind|crit|prov|view|mode|ui)\.[a-z]/i.test(e.textContent.trim())).map((e) => e.textContent.trim()).slice(0, 20));
+console.log('clés non traduites visibles :', missing);
+console.log('problèmes :', problems.filter((p) => !/indisponible|Failed to load resource|\/js\/(views|ui)\/(map2d|globe3d|timebar|compare|measure|skyview)|api\/status/.test(p)));
+await browser.close(); srv.close();
